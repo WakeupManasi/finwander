@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinWander – Find Your Perfect Destination</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       SOUND CONTROLS (fixed)
+  ══════════════════════════════════ -->
+  <div class="sound-control" id="soundControl" title="Toggle sounds">
+    <i class="fas fa-volume-up" id="soundIcon"></i>
+  </div>
+
+  <!-- ══════════════════════════════════
+       LOADING SCREEN
+  ══════════════════════════════════ -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-globe"><i class="fas fa-globe-americas"></i></div>
+      <div class="loader-logo">Fin<span>Wander</span></div>
+      <div class="loader-plane-track">
+        <div class="loader-plane"><i class="fas fa-paper-plane"></i></div>
+        <div class="loader-track-line"></div>
+      </div>
+      <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+      <p class="loader-text">Finding your next adventure…</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">Fin<span>Wander</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#popular">Destinations</a></li>
+        <li><a href="#map-section">Map</a></li>
+        <li><a href="#my-trips">My Trips</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode">
+          <i class="fas fa-moon" id="darkIcon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="assets/videos/hero-bg.mp4" type="video/mp4"/>
+        <img src="assets/images/hero-bg.jpg" alt="Travel"/>
+      </video>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow"><i class="fas fa-compass"></i> Your Journey Begins Here</p>
+      <h1 class="hero-title">Find Your <em>Perfect</em><br/>Travel Destination</h1>
+      <p class="hero-sub">Discover where you should travel based on your travel personality — not just your search bar.</p>
+      <div class="hero-ctas">
+        <a href="#quiz" class="btn btn-primary" id="heroQuizBtn"><i class="fas fa-plane-departure"></i> Start Quiz</a>
+        <button class="btn btn-ghost" id="surpriseMeHero"><i class="fas fa-dice"></i> Surprise Me</button>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       STATS
+  ══════════════════════════════════ -->
+  <section class="stats-section" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <i class="fas fa-map-marker-alt stat-icon"></i>
+          <div class="stat-num-wrap"><span class="stat-num" data-target="500">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Destinations</p>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-users stat-icon"></i>
+          <div class="stat-num-wrap"><span class="stat-num" data-target="10000">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Travelers Inspired</p>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-mountain stat-icon"></i>
+          <div class="stat-num-wrap"><span class="stat-num" data-target="150">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Adventures Discovered</p>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-globe stat-icon"></i>
+          <div class="stat-num-wrap"><span class="stat-num" data-target="50">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Countries Covered</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       QUIZ
+  ══════════════════════════════════ -->
+  <section class="quiz-section" id="quiz">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Personality Quiz</p>
+        <h2>What Kind of Traveler Are You?</h2>
+        <p class="section-sub">Answer 7 quick questions and we'll craft your perfect match.</p>
+      </div>
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-progress-wrap">
+          <div class="quiz-progress-bar" id="progressBar"></div>
+        </div>
+        <p class="quiz-step-label" id="stepLabel">Step 1 of 7</p>
+
+        <!-- Q1 -->
+        <div class="quiz-step active" data-step="1">
+          <h3 class="quiz-q"><i class="fas fa-sun"></i> What's your travel vibe?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="vibe" value="Adventure"/><span class="option-icon">🏔️</span><span class="option-label">Adventure</span></label>
+            <label class="option-card"><input type="radio" name="vibe" value="Relaxation"/><span class="option-icon">🏖️</span><span class="option-label">Relaxation</span></label>
+            <label class="option-card"><input type="radio" name="vibe" value="Cultural"/><span class="option-icon">🏛️</span><span class="option-label">Cultural</span></label>
+            <label class="option-card"><input type="radio" name="vibe" value="Party"/><span class="option-icon">🎉</span><span class="option-label">Party / Nightlife</span></label>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div class="quiz-step" data-step="2">
+          <h3 class="quiz-q"><i class="fas fa-wallet"></i> What's your budget style?</h3>
+          <div class="quiz-options three-col">
+            <label class="option-card"><input type="radio" name="budget" value="Low"/><span class="option-icon">💰</span><span class="option-label">Budget Traveler</span></label>
+            <label class="option-card"><input type="radio" name="budget" value="Medium"/><span class="option-icon">💳</span><span class="option-label">Moderate Spender</span></label>
+            <label class="option-card"><input type="radio" name="budget" value="Luxury"/><span class="option-icon">💎</span><span class="option-label">Luxury Traveler</span></label>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div class="quiz-step" data-step="3">
+          <h3 class="quiz-q"><i class="fas fa-cloud-sun"></i> Preferred climate?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="climate" value="Cold"/><span class="option-icon">❄️</span><span class="option-label">Cold</span></label>
+            <label class="option-card"><input type="radio" name="climate" value="Warm"/><span class="option-icon">☀️</span><span class="option-label">Warm</span></label>
+            <label class="option-card"><input type="radio" name="climate" value="Tropical"/><span class="option-icon">🌴</span><span class="option-label">Tropical</span></label>
+            <label class="option-card"><input type="radio" name="climate" value="Moderate"/><span class="option-icon">🌤️</span><span class="option-label">Moderate</span></label>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div class="quiz-step" data-step="4">
+          <h3 class="quiz-q"><i class="fas fa-calendar-alt"></i> How long is your trip?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="duration" value="Weekend"/><span class="option-icon">⚡</span><span class="option-label">Weekend</span></label>
+            <label class="option-card"><input type="radio" name="duration" value="Short"/><span class="option-icon">📅</span><span class="option-label">3–5 Days</span></label>
+            <label class="option-card"><input type="radio" name="duration" value="Week"/><span class="option-icon">🌏</span><span class="option-label">1 Week</span></label>
+            <label class="option-card"><input type="radio" name="duration" value="Long"/><span class="option-icon">✈️</span><span class="option-label">2 Weeks</span></label>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div class="quiz-step" data-step="5">
+          <h3 class="quiz-q"><i class="fas fa-tree"></i> Preferred landscape?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="landscape" value="Mountains"/><span class="option-icon">⛰️</span><span class="option-label">Mountains</span></label>
+            <label class="option-card"><input type="radio" name="landscape" value="Beaches"/><span class="option-icon">🏝️</span><span class="option-label">Beaches</span></label>
+            <label class="option-card"><input type="radio" name="landscape" value="Cities"/><span class="option-icon">🏙️</span><span class="option-label">Cities</span></label>
+            <label class="option-card"><input type="radio" name="landscape" value="Nature"/><span class="option-icon">🌿</span><span class="option-label">Nature / Forest</span></label>
+          </div>
+        </div>
+        <!-- Q6 -->
+        <div class="quiz-step" data-step="6">
+          <h3 class="quiz-q"><i class="fas fa-users"></i> Your travel style?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="travelStyle" value="Solo"/><span class="option-icon">🧳</span><span class="option-label">Solo</span></label>
+            <label class="option-card"><input type="radio" name="travelStyle" value="Friends"/><span class="option-icon">👯</span><span class="option-label">Friends</span></label>
+            <label class="option-card"><input type="radio" name="travelStyle" value="Family"/><span class="option-icon">👨‍👩‍👧</span><span class="option-label">Family</span></label>
+            <label class="option-card"><input type="radio" name="travelStyle" value="Couple"/><span class="option-icon">💑</span><span class="option-label">Couple</span></label>
+          </div>
+        </div>
+        <!-- Q7 -->
+        <div class="quiz-step" data-step="7">
+          <h3 class="quiz-q"><i class="fas fa-star"></i> Favorite activity?</h3>
+          <div class="quiz-options four-col">
+            <label class="option-card"><input type="radio" name="activity" value="Sports"/><span class="option-icon">🧗</span><span class="option-label">Adventure Sports</span></label>
+            <label class="option-card"><input type="radio" name="activity" value="Food"/><span class="option-icon">🍜</span><span class="option-label">Food Exploration</span></label>
+            <label class="option-card"><input type="radio" name="activity" value="Culture"/><span class="option-icon">🎭</span><span class="option-label">Cultural Sightseeing</span></label>
+            <label class="option-card"><input type="radio" name="activity" value="Nightlife"/><span class="option-icon">🎶</span><span class="option-label">Nightlife</span></label>
+          </div>
+        </div>
+
+        <div class="quiz-nav">
+          <button class="btn btn-outline" id="prevBtn" style="display:none"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="btn btn-primary" id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
+          <button class="btn btn-primary" id="submitBtn" style="display:none"><i class="fas fa-map-marker-alt"></i> Find My Destination</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       RESULT
+  ══════════════════════════════════ -->
+  <section class="result-section" id="result" style="display:none">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Your Perfect Match</p>
+        <h2>We Found Your Destination!</h2>
+      </div>
+
+      <div class="result-card" id="resultCard">
+        <!-- LEFT: image + video -->
+        <div class="result-media">
+          <img src="" alt="" id="resultImg" class="result-img"/>
+          <div class="result-vibe-badge" id="resultVibe"></div>
+          <div class="result-rating-badge" id="resultRatingBadge"></div>
+          <!-- Destination video preview -->
+          <div class="result-video-wrap" id="resultVideoWrap">
+            <div class="result-video-label"><i class="fas fa-play-circle"></i> Destination Preview</div>
+            <video id="resultVideo" class="result-dest-video" muted loop controls>
+              <source src="" id="resultVideoSrc" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+
+        <!-- RIGHT: details -->
+        <div class="result-body">
+          <h2 class="result-name" id="resultName"></h2>
+          <p class="result-desc" id="resultDesc"></p>
+
+          <!-- Meta pills -->
+          <div class="result-meta">
+            <div class="meta-item">
+              <i class="fas fa-clock"></i>
+              <div><span class="meta-label">Best Time</span><span class="meta-val" id="resultBestTime"></span></div>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-rupee-sign"></i>
+              <div><span class="meta-label">Est. Total</span><span class="meta-val" id="resultCost"></span></div>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-thermometer-half"></i>
+              <div><span class="meta-label">Avg. Temp</span><span class="meta-val" id="resultTemp"></span></div>
+            </div>
+          </div>
+
+          <!-- Why it matches -->
+          <div class="result-why">
+            <h4><i class="fas fa-heart"></i> Why it matches you</h4>
+            <ul id="resultReasons"></ul>
+          </div>
+
+          <!-- Activities -->
+          <div class="result-activities">
+            <h4><i class="fas fa-star"></i> Top Activities</h4>
+            <div class="activity-tags" id="resultActivities"></div>
+          </div>
+
+          <!-- Actions -->
+          <div class="result-actions">
+            <button class="btn btn-primary" id="saveTripBtn"><i class="fas fa-bookmark"></i> Save Trip</button>
+            <button class="btn btn-outline" id="retakeBtn"><i class="fas fa-redo"></i> Retake Quiz</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEATHER WIDGET -->
+      <div class="weather-widget" id="weatherWidget">
+        <div class="weather-header">
+          <i class="fas fa-cloud-sun weather-main-icon" id="weatherIcon"></i>
+          <div>
+            <h3 id="weatherCity">Weather in —</h3>
+            <p class="weather-condition" id="weatherCondition"></p>
+          </div>
+          <div class="weather-temp-big" id="weatherTemp"></div>
+        </div>
+        <div class="weather-details">
+          <div class="weather-detail"><i class="fas fa-tint"></i><span id="weatherHumidity"></span><p>Humidity</p></div>
+          <div class="weather-detail"><i class="fas fa-wind"></i><span id="weatherWind"></span><p>Wind</p></div>
+          <div class="weather-detail"><i class="fas fa-eye"></i><span id="weatherVis"></span><p>Visibility</p></div>
+          <div class="weather-detail"><i class="fas fa-sun"></i><span id="weatherUV"></span><p>UV Index</p></div>
+        </div>
+        <div class="weather-season">
+          <i class="fas fa-calendar-check"></i>
+          <span>Best travel season: <strong id="weatherSeason"></strong></span>
+        </div>
+      </div>
+
+      <!-- BUDGET PLANNER -->
+      <div class="budget-planner" id="budgetPlanner">
+        <div class="section-header" style="margin-bottom:32px">
+          <p class="section-tag">Trip Planner</p>
+          <h2>Budget Breakdown</h2>
+          <p class="section-sub">Adjust sliders to personalise your estimated trip cost.</p>
+        </div>
+        <div class="budget-grid">
+          <div class="budget-sliders">
+            <div class="budget-row">
+              <label><i class="fas fa-plane"></i> Transport</label>
+              <input type="range" id="sliderTransport" min="1000" max="20000" step="500" value="5000"/>
+              <span class="budget-val" id="valTransport">₹5,000</span>
+            </div>
+            <div class="budget-row">
+              <label><i class="fas fa-hotel"></i> Accommodation</label>
+              <input type="range" id="sliderAccomm" min="1000" max="25000" step="500" value="4000"/>
+              <span class="budget-val" id="valAccomm">₹4,000</span>
+            </div>
+            <div class="budget-row">
+              <label><i class="fas fa-utensils"></i> Food</label>
+              <input type="range" id="sliderFood" min="500" max="10000" step="250" value="2000"/>
+              <span class="budget-val" id="valFood">₹2,000</span>
+            </div>
+            <div class="budget-row">
+              <label><i class="fas fa-hiking"></i> Activities</label>
+              <input type="range" id="sliderActivities" min="500" max="10000" step="250" value="1000"/>
+              <span class="budget-val" id="valActivities">₹1,000</span>
+            </div>
+          </div>
+          <div class="budget-total-wrap">
+            <div class="budget-donut-labels" id="budgetDonutLabels"></div>
+            <div class="budget-total-card">
+              <p class="budget-total-label">Total Estimated Cost</p>
+              <p class="budget-total-num" id="budgetTotal">₹12,000</p>
+              <p class="budget-total-sub" id="budgetPerDay"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="reviews-section" id="reviewsSection">
+        <div class="section-header" style="margin-bottom:32px">
+          <p class="section-tag">Traveler Reviews</p>
+          <h2>What People Say</h2>
+        </div>
+        <div class="reviews-grid" id="reviewsGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       POPULAR DESTINATIONS
+  ══════════════════════════════════ -->
+  <section class="popular-section" id="popular">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Explore</p>
+        <h2>Popular Destinations</h2>
+        <p class="section-sub">Get inspired by our most-loved travel picks.</p>
+      </div>
+      <div class="destinations-grid" id="destinationsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       INTERACTIVE MAP
+  ══════════════════════════════════ -->
+  <section class="map-section" id="map-section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Explore the World</p>
+        <h2>Destinations on the Map</h2>
+        <p class="section-sub">Click any pin to explore a destination.</p>
+      </div>
+      <div class="map-filter-bar" id="mapFilterBar"></div>
+      <div class="map-wrap">
+        <div id="destMap"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       MY TRIPS
+  ══════════════════════════════════ -->
+  <section class="mytrips-section" id="my-trips">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Your Wishlist</p>
+        <h2>My Trips</h2>
+        <p class="section-sub">Your personally curated travel wishlist.</p>
+      </div>
+      <div class="mytrips-grid" id="myTripsGrid">
+        <div class="empty-state" id="emptyTrips">
+          <i class="fas fa-map-marked-alt"></i>
+          <p>No saved trips yet. Take the quiz and save your match!</p>
+          <a href="#quiz" class="btn btn-primary">Start Quiz</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#home" class="logo">Fin<span>Wander</span></a>
+          <p>Discover your next adventure with a quiz that actually gets you.</p>
+          <div class="social-icons">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#quiz">Take the Quiz</a></li>
+            <li><a href="#popular">Destinations</a></li>
+            <li><a href="#map-section">Map</a></li>
+            <li><a href="#my-trips">My Trips</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">About FinWander</a></li>
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 FinWander. All rights reserved. Made with <i class="fas fa-heart"></i> for travelers.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Audio elements -->
+  <audio id="sndClick"   src="assets/sounds/click.mp3"   preload="auto"></audio>
+  <audio id="sndSuccess" src="assets/sounds/success.mp3" preload="auto"></audio>
+  <audio id="sndWhoosh"  src="assets/sounds/whoosh.mp3"  preload="auto"></audio>
+  <audio id="sndPop"     src="assets/sounds/pop.mp3"     preload="auto"></audio>
+  <audio id="sndError"   src="assets/sounds/error.mp3"   preload="auto"></audio>
+  <audio id="sndAmbient" src="assets/sounds/ambient.mp3" preload="auto" loop></audio>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
