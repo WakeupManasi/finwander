@@ -76,5 +76,22 @@ _Add screenshots of your website here_
 - User login & saved trips  
 - Travel blogs and community features  
 
----
+--Vision
+
+To evolve into a smart travel companion that:
+
+Understands user preferences
+Predicts travel needs
+Suggests complete itineraries automatically
+Imagine This...
+
+You open the app…
+You don’t know where to go…
+
+👉 You answer a few fun questions
+👉 The app understands your vibe
+👉 It suggests the perfect destination
+👉 You see costs, weather, and map instantly
+
+That’s the experience this project aims to create.-
 
